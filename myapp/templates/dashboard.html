@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/dashboard.css') }}{% if static_hash %}?v={{ static_hash('css/dashboard.css') }}{% endif %}"
+/>
+{% endblock %} {% block content %}
+<!-- HERO -->
+<section class="dash-hero">
+  <figure class="hero-media">
+    <img
+      src="{{ url_for('static', filename='pohon.webp') }}"
+      alt="Hamparan pohon Eucalyptus"
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
+</section>
+
+<!-- ARTIKEL -->
+<section class="dash-article">
+  <header class="lede">
+    <h1 class="page-title">Eukaliptus untuk Industri Pulp &amp; Kertas</h1>
+    <p class="muted">
+      Tanaman <em>Eucalyptus</em> sangat penting sebagai bahan baku industri
+      kertas karena kandungan seratnya. Spesies yang umum digunakan untuk
+      keperluan komersial antara lain <em>Eucalyptus grandis</em>,
+      <em>E. tereticornis</em>, dan <em>E. pellita</em>, yang dibudidayakan
+      secara luas dalam hutan tanaman industri (HTI) di Indonesia. Waktu panen
+      yang optimal, sekitar usia <b>6–7 tahun</b>, dipilih berdasarkan komposisi
+      selulosa, hemiselulosa, dan lignin pada kayu.
+    </p>
+  </header>
+
+  <!-- GRID: gambar kiri, teks kanan -->
+  <div class="article-grid">
+    <figure class="illustration">
+      <img
+        src="{{ url_for('static', filename='tanaman.webp') }}"
+        alt="Daun & batang Eucalyptus"
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>Daun &amp; batang Eucalyptus</figcaption>
+    </figure>
+
+    <div class="text">
+      <h2>Manfaat Eucalyptus untuk Industri Kertas</h2>
+      <ul class="check-list">
+        <li>
+          <strong>Bahan baku utama:</strong> kayu diolah menjadi pulp (bubur
+          kertas), bahan dasar pembuatan kertas.
+        </li>
+        <li>
+          <strong>Pertumbuhan cepat:</strong> banyak spesies tumbuh cepat,
+          menunjang pasokan berkelanjutan.
+        </li>
+        <li>
+          <strong>Spesies yang digunakan:</strong> <em>E. grandis</em>,
+          <em>E. tereticornis</em>, <em>E. pellita</em>.
+        </li>
+        <li>
+          <strong>Kandungan kimia optimal:</strong> komposisi selulosa,
+          hemiselulosa, dan lignin mendukung proses pulping/bleaching.
+        </li>
+        <li>
+          <strong>Budidaya industri:</strong> dibudidayakan luas di HTI (Sumatra
+          &amp; Kalimantan) untuk memenuhi kebutuhan pulp &amp; kertas.
+        </li>
+      </ul>
+
+      <h2>Keunggulan Serat Kayu Eucalyptus</h2>
+      <ul class="check-list">
+        <li>
+          <strong>Pembentukan kertas lebih baik:</strong> serat tipis &amp;
+          proporsional mempermudah pembentukan lembar.
+        </li>
+        <li>
+          <strong>Kualitas kertas meningkat:</strong> bantu kelembutan,
+          opasitas, kelicinan, dan stabilitas dimensi.
+        </li>
+        <li>
+          <strong>Lignin relatif lebih rendah:</strong> memudahkan pemasakan
+          &amp; pemutihan pulp.
+        </li>
+        <li>
+          <strong>Serat seragam:</strong> struktur seragam menghasilkan mutu
+          kertas konsisten.
+        </li>
+      </ul>
+
+      <h2>Produk Kertas dari Pulp Eucalyptus</h2>
+      <ul class="check-list">
+        <li>Kertas cetak &amp; tulis bermutu tinggi</li>
+        <li>Kertas fotokopi</li>
+        <li>Kertas tisu &amp; serbet</li>
+        <li>Kertas karton putih</li>
+        <li>Kertas rokok</li>
+        <li>Kraft paper (bila dicampur serat panjang)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

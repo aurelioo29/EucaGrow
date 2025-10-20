@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EUCAGROW V.1 | Login Pages</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
+
+    <style>
+      :root {
+        --bg-url: url('{{ url_for("static", filename="bg.jpg") }}');
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div>
+        <h1>EUCAGROW V.1</h1>
+        <p class="tagline">Welcome back! Please login to your account.</p>
+      </div>
+
+      {# --- Tampilkan & habiskan pesan flash di halaman login --- #} {% with
+      messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+      <div class="flash-stack">
+        {% for cat, msg in messages %}
+        <div class="alert {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+
+      <form action="{{ url_for('auth.login_post') }}" method="POST">
+        <div class="input-group">
+          <label for="username">Nama Pengguna</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Masukkan nama pengguna"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label for="password">Kata Sandi</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Masukkan kata sandi"
+            required
+          />
+        </div>
+        <button type="submit" class="btn">Masuk</button>
+      </form>
+
+      <div>
+        <p class="footer-text">Copyright &copy; 2025 All rights reserved</p>
+      </div>
+    </div>
+  </body>
+</html>

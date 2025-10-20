@@ -1,0 +1,17 @@
+{
+  "model_kind": "regressor",
+  "algo": "xgboost.XGBRegressor",
+  "features": [
+    "suhu_udara_°c",
+    "kelembaban_udara_%",
+    "suhu_tanah_°c",
+    "kelembaban_tanah_%",
+    "ph_tanah",
+    "nitrogen_mg_kg",
+    "fosfor_mg_kg",
+    "kalium_mg_kg",
+    "curah_hujan_mm"
+  ],
+  "target": "waktu_tanam",
+  "trained_at": 1760942819
+}

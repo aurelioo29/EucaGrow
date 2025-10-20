@@ -1,0 +1,191 @@
+{% extends "base.html" %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/laporan.css') }}?v={{ static_hash('css/laporan.css') }}"
+/>
+{% endblock %} {% block content %}
+<h1 class="page-title">Laporan Prediksi</h1>
+<p class="muted">Semua hasil prediksi yang tersimpan.</p>
+
+<div class="card report-card">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="left">
+      <div class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M10 4a6 6 0 104.47 10.03l4.25 4.25a1 1 0 001.42-1.42l-4.25-4.25A6 6 0 0010 4zm-4 6a4 4 0 118.001.001A4 4 0 016 10z"
+          ></path>
+        </svg>
+        <input
+          id="tableSearch"
+          type="search"
+          placeholder="Cari lokasi, status, rekomendasi…"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div class="right">
+      <!-- Native dropdown pakai <details> -->
+      <details class="dropdown">
+        <summary class="btn btn-primary">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M5 12h14M5 6h14M5 18h14"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+            />
+          </svg>
+          Download
+        </summary>
+        <ul class="menu">
+          <li>
+            <a href="{{ url_for('dash.export_csv') }}">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 4h16v12H5l-1 1V4zM8 8h8M8 11h8M8 14h6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              CSV
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('dash.export_xlsx') }}">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 4h10l6 6v10H4z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M14 4v6h6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M8 18l4-6m0 6l-4-6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Excel
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('dash.export_pdf') }}">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M6 4h8l4 4v12H6z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M14 4v4h4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path d="M8 16h8" stroke="currentColor" stroke-width="2" />
+              </svg>
+              PDF
+            </a>
+          </li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <!-- Tabel -->
+  <div class="table-scroll">
+    <table id="reportTable" class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Waktu</th>
+          <th>Lokasi</th>
+          <th class="num">Suhu Udara</th>
+          <th class="num">Kelemb. Udara</th>
+          <th class="num">Suhu Tanah</th>
+          <th class="num">Kelemb. Tanah</th>
+          <th class="num">Curah Hujan</th>
+          <th class="num">pH</th>
+          <th class="num">Nitrogen</th>
+          <th class="num">Fosfor</th>
+          <th class="num">Kalium</th>
+          <th>Status</th>
+          <th style="min-width: 260px">Rekomendasi</th>
+          <th class="num">Waktu Tanam (hari)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td class="muted">{{ loop.index }}</td>
+          <td>{{ (r.created_at or r.timestamp) | default('-', true) }}</td>
+          <td class="strong">{{ r.lokasi_tanam or '-' }}</td>
+          <td class="num">{{ r.suhu_udara }}</td>
+          <td class="num">{{ r.kelembapan_udara }}</td>
+          <td class="num">{{ r.suhu_tanah }}</td>
+          <td class="num">{{ r.kelembapan_tanah }}</td>
+          <td class="num">{{ r.curah_hujan }}</td>
+          <td class="num">{{ r.ph_tanah }}</td>
+          <td class="num">{{ r.nitrogen }}</td>
+          <td class="num">{{ r.fosfor }}</td>
+          <td class="num">{{ r.kalium }}</td>
+          <td>
+            <span
+              class="badge
+              {{ 'badge--good' if r.status_kesuburan in ['Sangat Subur','Subur'] else
+                 ('badge--warn' if r.status_kesuburan == 'Sedang' else 'badge--bad') }}"
+            >
+              {{ r.status_kesuburan }}
+            </span>
+          </td>
+          <td class="wrap">{{ r.rekomendasi }}</td>
+          <td class="num strong">{{ r.waktu_tanam_hari }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="15" class="empty">Belum ada data</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Mini JS: filter baris berdasarkan teks pencarian -->
+<script>
+  const q = document.getElementById("tableSearch");
+  const table = document.getElementById("reportTable");
+  if (q && table) {
+    q.addEventListener("input", () => {
+      const term = q.value.trim().toLowerCase();
+      const rows = table.tBodies[0].rows;
+      for (const tr of rows) {
+        const txt = tr.innerText.toLowerCase();
+        tr.style.display = txt.includes(term) ? "" : "none";
+      }
+    });
+  }
+
+  // Tutup dropdown <details> ketika klik di luar
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll(".dropdown[open]").forEach((d) => {
+      if (!d.contains(e.target)) d.removeAttribute("open");
+    });
+  });
+</script>
+{% endblock %}

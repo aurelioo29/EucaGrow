@@ -1,0 +1,169 @@
+/* v3 – hero lebih kecil, anti scroll-x, grid rapi */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+/* Guard */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===== HERO ===== */
+.dash-hero {
+  margin: 0 auto 16px;
+  width: 100%;
+  max-width: 1100px;
+  padding-inline: clamp(12px, 3vw, 24px);
+}
+.hero-media {
+  margin: 0;
+  overflow: hidden; /* cegah overflow yang bikin scroll-x */
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+.hero-media img {
+  width: 100%;
+  height: clamp(220px, 32vw, 420px); /* batasi tinggi hero */
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ===== ARTIKEL ===== */
+.dash-article {
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 0 clamp(12px, 3vw, 24px) 40px;
+}
+.lede .page-title {
+  margin: 0 0 4px;
+}
+.lede .muted {
+  color: #6b7280;
+  margin: 4px 0 18px;
+}
+
+.content h2,
+.content h3 {
+  margin: 16px 0 8px;
+}
+.benefit-list {
+  margin: 0 0 18px 1.2rem;
+  display: grid;
+  gap: 6px 12px;
+}
+.benefit-list li {
+  line-height: 1.6;
+}
+
+/* ===== GRID (gambar kiri + teks kanan) ===== */
+.article-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  gap: clamp(12px, 2.4vw, 24px);
+  align-items: start;
+  margin-top: 8px;
+}
+
+.illustration {
+  margin: 0;
+  text-align: center;
+}
+.illustration img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+}
+.illustration figcaption {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.4rem;
+}
+
+.article-grid .text ul {
+  margin-left: 1.2rem;
+}
+.article-grid .text li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+.cta {
+  margin-top: 0.75rem;
+}
+.cta a {
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid #93c5fd;
+  padding-bottom: 1px;
+}
+.cta a:hover {
+  color: #2563eb;
+  border-color: #2563eb;
+}
+
+/* ===== Referensi ===== */
+.refs {
+  border-top: 1px solid var(--border, #e5e7eb);
+  margin-top: 22px;
+  padding-top: 14px;
+}
+.refs a {
+  color: #2563eb;
+  text-decoration: none;
+}
+.refs a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Responsif ===== */
+@media (max-width: 860px) {
+  .article-grid {
+    grid-template-columns: 1fr;
+  }
+  .illustration {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+  .hero-media img {
+    height: clamp(180px, 28vw, 320px);
+  } /* hero makin ringkas di HP */
+}
+
+/* (opsional) elemen util bila dipakai */
+.section-sep {
+  border: 0;
+  border-top: 1px solid var(--border, #e5e7eb);
+  margin: 1.25rem 0 1rem;
+}
+.info-card {
+  background: #f8fafc;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 0.25rem 0 1rem;
+}
+.info-card .pill {
+  background: #eef2ff;
+  border: 1px solid #e0e7ff;
+  color: #1e293b;
+  border-radius: 999px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  display: inline-block;
+}
+.check-list {
+  margin: 0.25rem 0 1rem 1.2rem;
+  display: grid;
+  gap: 0.35rem 0.8rem;
+}

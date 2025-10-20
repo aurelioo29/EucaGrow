@@ -1,0 +1,51 @@
+# ====== Secrets / Env ======
+/instance/.env
+.env
+.env.local
+.env.development.local
+.env.production.local
+!.env.example          
+
+# ====== Python cache ======
+__pycache__/
+myapp/__pycache__/
+*.py[cod]
+*$py.class
+
+# ====== Jupyter ======
+.ipynb_checkpoints/
+
+# ====== Virtual environments ======
+.venv/
+venv/
+env/
+ENV/
+
+# ====== IDE / Editor ======
+.vscode/
+.idea/
+
+# ====== OS junk ======
+.DS_Store
+Thumbs.db
+
+# ====== Logs / runtime ======
+*.log
+*.pid
+*.pid.lock
+.cache/
+.python-version
+
+# ====== Packaging / build ======
+build/
+dist/
+.eggs/
+*.egg-info/
+wheels/
+
+# ====== Tests / coverage ======
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*

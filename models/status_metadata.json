@@ -1,0 +1,21 @@
+{
+  "model_kind": "classifier",
+  "algo": "xgboost.XGBClassifier",
+  "features": [
+    "suhu_udara_°c",
+    "kelembaban_udara_%",
+    "suhu_tanah_°c",
+    "kelembaban_tanah_%",
+    "ph_tanah",
+    "nitrogen_mg_kg",
+    "fosfor_mg_kg",
+    "kalium_mg_kg",
+    "curah_hujan_mm"
+  ],
+  "classes": [
+    "Kurang Subur",
+    "Sangat Subur",
+    "Sedang"
+  ],
+  "trained_at": 1760939133
+}

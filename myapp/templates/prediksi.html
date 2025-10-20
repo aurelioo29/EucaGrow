@@ -1,0 +1,201 @@
+{% extends "base.html" %} {% block head %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/prediksi.css') }}?v={{ static_hash('css/prediksi.css') }}"
+/>
+{% endblock %} {% block content %}
+<h1 class="page-title">Selamat Datang !!!</h1>
+<p class="muted">Sistem pendukung keputusan waktu tanam eucalyptus.</p>
+
+<div class="card form-card wide">
+  <form
+    id="predictionForm"
+    method="post"
+    action="{{ url_for('dash.prediksi') }}"
+  >
+    <div class="form-grid">
+      <!-- TANGGAL INPUT (baru) -->
+      <div class="field">
+        <label>Tanggal Input</label>
+        <input
+          name="tanggal_input"
+          type="date"
+          value="{{ today_str if today_str else '' }}"
+          placeholder="yyyy-mm-dd"
+        />
+        <small class="muted">Kosongkan untuk pakai tanggal hari ini.</small>
+      </div>
+
+      <div class="field">
+        <label>Lokasi Tanam</label>
+        <input name="lokasi_tanam" placeholder="Mis. Blok A-1" required />
+      </div>
+
+      <div class="field">
+        <label>Suhu Udara (°C)</label>
+        <input name="suhu_udara" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>Kelembaban Udara (%)</label>
+        <input name="kelembapan_udara" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>Suhu Tanah (°C)</label>
+        <input name="suhu_tanah" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>Kelembaban Tanah (%)</label>
+        <input name="kelembapan_tanah" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>Curah Hujan (mm)</label>
+        <input name="curah_hujan" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>pH Tanah</label>
+        <input name="ph_tanah" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>Nitrogen (mg/kg)</label>
+        <input name="nitrogen" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>Fosfor (mg/kg)</label>
+        <input name="fosfor" type="number" step="any" required />
+      </div>
+
+      <div class="field">
+        <label>Kalium (mg/kg)</label>
+        <input name="kalium" type="number" step="any" required />
+      </div>
+
+      <div class="actions">
+        <button
+          type="button"
+          id="btn-reset-inline"
+          class="btn btn-outline btn-lg"
+        >
+          Reset Form
+        </button>
+
+        <button type="submit" class="btn btn-primary btn-lg">
+          Prediksi &amp; Simpan
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% if result %}
+<div id="result-card" class="card result-card">
+  <div class="kv">
+    <span class="k">Status Kesuburan</span>
+    <span
+      class="badge {% if result.status_kesuburan == 'Kurang Subur' %}kurang-subur {% elif result.status_kesuburan == 'Sedang' %}sedang {% else %}sangat-subur{% endif %}"
+    >
+      {{ result.status_kesuburan }}
+    </span>
+  </div>
+
+  <div class="kv">
+    <span class="k">Rekomendasi</span>
+    <span>{{ result.rekomendasi }}</span>
+  </div>
+
+  <div class="kv">
+    <span class="k">Waktu Tanam</span>
+    <!-- tampilkan tanggal target + total hari -->
+    <span
+      >{{ result.waktu_tanam_tanggal }} ({{ result.waktu_tanam_hari }}
+      hari)</span
+    >
+  </div>
+
+  {% if result.lokasi_tanam %}
+  <div class="kv">
+    <span class="k">Lokasi</span>
+    <span>{{ result.lokasi_tanam }}</span>
+  </div>
+  {% endif %}
+</div>
+
+<div class="footer-actions">
+  <button
+    type="button"
+    id="btn-new-pred"
+    class="btn-reset btn-lg"
+    title="Mulai prediksi baru"
+  >
+    ↻ Prediksi Baru
+  </button>
+</div>
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const btnNew = document.getElementById("btn-new-pred");
+    const form = document.getElementById("predictionForm");
+    const btnReset = document.getElementById("btn-reset-inline");
+
+    if (btnReset) {
+      btnReset.addEventListener("click", function () {
+        Swal.fire({
+          title: "Reset form?",
+          text: "Semua input akan dikosongkan.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Ya, reset",
+          cancelButtonText: "Batal",
+        }).then((res) => {
+          if (res.isConfirmed) {
+            form.reset();
+            const rc = document.getElementById("result-card");
+            if (rc) rc.remove();
+            Swal.fire({
+              text: "Form berhasil direset.",
+              icon: "success",
+              timer: 1200,
+              showConfirmButton: false,
+            });
+          }
+        });
+      });
+    }
+
+    if (btnNew) {
+      btnNew.addEventListener("click", function (e) {
+        const d = Math.max(btnNew.clientWidth, btnNew.clientHeight);
+        const r = document.createElement("span");
+        r.className = "ripple";
+        r.style.width = r.style.height = d + "px";
+        const rect = btnNew.getBoundingClientRect();
+        r.style.left = e.clientX - rect.left - d / 2 + "px";
+        r.style.top = e.clientY - rect.top - d / 2 + "px";
+        btnNew.appendChild(r);
+        setTimeout(() => r.remove(), 600);
+      });
+      btnNew.addEventListener("click", function () {
+        Swal.fire({
+          title: "Mulai prediksi baru?",
+          text: "Form akan dikosongkan dan hasil disembunyikan.",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Ya, reset",
+          cancelButtonText: "Batal",
+        }).then((res) => {
+          if (res.isConfirmed) {
+            window.location.href = "{{ url_for('dash.prediksi') }}";
+          }
+        });
+      });
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,24 @@
+# --- Core web ---
+Flask==3.1.2
+Flask-Login==0.6.3
+Flask-Bcrypt==1.0.1
+Flask-Migrate==4.1.0
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.44
+python-dotenv==1.1.1
+gunicorn==21.2.0
+
+# --- Database MySQL ---
+PyMySQL==1.1.2
+
+# --- ML inference ---
+numpy==2.3.3
+scipy==1.16.2
+scikit-learn==1.7.2
+joblib==1.5.2
+threadpoolctl==3.6.0
+
+# --- Export (fitur laporan) ---
+pandas==2.2.3
+openpyxl==3.1.5
+reportlab==4.2.5

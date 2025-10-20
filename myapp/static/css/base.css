@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+:root {
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --ink: #1e293b;
+  --muted: #64748b;
+  --primary: #4a90e2;
+  --primary-600: #3b7ad1;
+  --ring: #dbeafe;
+  --border: #e5e7eb;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+.brand a {
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.nav__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--primary-600);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+}
+.btn-ghost:hover {
+  text-decoration: bold;
+}
+
+.flash {
+  margin: 12px 0;
+}
+.alert {
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.alert.info {
+  background: #eef2ff;
+}
+.alert.success {
+  background: #ecfdf5;
+}
+.alert.warning {
+  background: #fffbeb;
+}
+.alert.danger {
+  background: #fef2f2;
+}
+
+/* ==== NAV (layout baru) ==== */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+}
+.brand {
+  flex: 0 0 auto;
+}
+.brand a {
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+/* Link tengah dibuat benar-benar di tengah */
+.nav__links {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 22px; /* spasi biar gak “gempet” */
+}
+.nav__links .nav-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+  padding: 8px 10px;
+  opacity: 0.9;
+}
+.nav__links .nav-link:hover {
+  opacity: 1;
+}
+.nav__links .nav-link.active {
+  color: var(--primary);
+}
+.nav__links .nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -6px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 999px;
+}
+
+/* Area kanan */
+.nav__right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tombol generic */
+.btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 10px 16px;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--primary-600);
+}
+.btn-ghost {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+/* Tombol logout lebih “chip” + ikon */
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  line-height: 1;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease,
+    background 0.15s ease;
+}
+.logout-btn .icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+.logout-btn:hover {
+  background: #ff0000;
+  border-color: #d1d5db;
+  box-shadow: 0 1px 8px rgba(2, 6, 23, 0.06);
+  text-color: #fff;
+}
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .nav__links {
+    gap: 14px;
+  }
+  .logout-btn span {
+    display: none;
+  } /* tampilkan hanya ikon di HP */
+  .logout-btn {
+    padding: 8px;
+  }
+}

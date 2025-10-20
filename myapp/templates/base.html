@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{{ title or "EUCAGROW V.1 | Dashboard" }}</title>
+
+    <!-- base.html -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base.css') }}?v={{ static_hash('css/base.css') }}"
+    />
+
+    {# halaman boleh menambah CSS/JS di sini #} {% block head %}{% endblock %}
+  </head>
+  <body>
+    <header class="nav">
+      <div class="nav__inner container">
+        <div class="brand">
+          <a href="{{ url_for('dash.dashboard') }}">EUCAGROW</a>
+        </div>
+
+        <nav class="nav__links" aria-label="Primary">
+          <a
+            href="{{ url_for('dash.prediksi') }}"
+            class="nav-link {{ 'active' if request.path.startswith('/prediksi') else '' }}"
+            >Prediction</a
+          >
+          <a
+            href="{{ url_for('dash.laporan') }}"
+            class="nav-link {{ 'active' if request.path.startswith('/laporan') else '' }}"
+            >Laporan</a
+          >
+        </nav>
+
+        <nav class="nav__right">
+          {% if current_user.is_authenticated %}
+          <a
+            id="logout-link"
+            class="btn btn-ghost logout-btn"
+            href="{{ url_for('auth.logout') }}"
+            aria-label="Logout"
+          >
+            <!-- Ikon logout (inline SVG) -->
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 12H3"></path>
+              <path d="M12 9l3 3-3 3"></path>
+              <path d="M21 4v16a2 2 0 0 1-2 2h-7"></path>
+            </svg>
+          </a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      {# tampilkan flash: - di halaman login: success, warning, danger, info -
+      di halaman lain : success, warning, danger (info di-skip) #} {% with raw =
+      get_flashed_messages(with_categories=true) %} {% if raw %} {% set allowed
+      = ['success','warning','danger'] %} {% if request.endpoint == 'auth.login'
+      %} {% set allowed = ['success','warning','danger','info'] %} {% endif %}
+      {% set messages = [] %} {% for cat, msg in raw %} {% if cat in allowed %}
+      {% set _ = messages.append((cat, msg)) %} {% endif %} {% endfor %} {% if
+      messages %}
+      <div class="flash">
+        {% for cat, msg in messages %}
+        <div class="alert {{cat}}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const link = document.getElementById("logout-link");
+        if (link) {
+          link.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const href = link.getAttribute("href");
+            const step1 = await Swal.fire({
+              title: "Logout sekarang?",
+              text: "Sesi kamu akan diakhiri.",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Ya, lanjut",
+              cancelButtonText: "Batal",
+            });
+            if (!step1.isConfirmed) return;
+            const step2 = await Swal.fire({
+              title: "Beneran yakin?",
+              text: "Setelah logout, kamu harus login lagi.",
+              icon: "question",
+              showCancelButton: true,
+              confirmButtonText: "Yakin, logout",
+              cancelButtonText: "Kembali",
+            });
+            if (!step2.isConfirmed) return;
+            window.location.href = href;
+          });
+        }
+
+        const flashSuccess = document.querySelector(".alert.success");
+        if (flashSuccess) {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "success",
+            title: flashSuccess.textContent,
+            showConfirmButton: false,
+            timer: 1800,
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
