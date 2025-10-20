@@ -14,18 +14,6 @@
     action="{{ url_for('dash.prediksi') }}"
   >
     <div class="form-grid">
-      <!-- TANGGAL INPUT (baru) -->
-      <div class="field">
-        <label>Tanggal Input</label>
-        <input
-          name="tanggal_input"
-          type="date"
-          value="{{ today_str if today_str else '' }}"
-          placeholder="yyyy-mm-dd"
-        />
-        <small class="muted">Kosongkan untuk pakai tanggal hari ini.</small>
-      </div>
-
       <div class="field">
         <label>Lokasi Tanam</label>
         <input name="lokasi_tanam" placeholder="Mis. Blok A-1" required />

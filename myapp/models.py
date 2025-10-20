@@ -39,5 +39,6 @@ class PredictionRecord(db.Model):
     status_kesuburan = db.Column(db.String(32), nullable=True)
     rekomendasi = db.Column(db.String(255), nullable=True)
     waktu_tanam_hari = db.Column(db.Integer, nullable=True)  # kamu minta fixed 120
+    waktu_tanam_tanggal = db.Column(db.String(10), nullable=True)
 
     user = db.relationship("User", backref="predictions", lazy=True)

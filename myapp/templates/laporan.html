@@ -127,6 +127,7 @@
           <th>Status</th>
           <th style="min-width: 260px">Rekomendasi</th>
           <th class="num">Waktu Tanam (hari)</th>
+          <th class="num">Waktu Tanam (tanggal)</th>
         </tr>
       </thead>
       <tbody>
@@ -155,6 +156,10 @@
           </td>
           <td class="wrap">{{ r.rekomendasi }}</td>
           <td class="num strong">{{ r.waktu_tanam_hari }}</td>
+          <td class="num">
+            {% set d = r.waktu_tanam_tanggal %} {{ d and (d[8:10] ~ '-' ~ d[5:7]
+            ~ '-' ~ d[0:4]) or '-' }}
+          </td>
         </tr>
         {% else %}
         <tr>

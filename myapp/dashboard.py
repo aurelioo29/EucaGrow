@@ -255,12 +255,18 @@ def dashboard():
     # konversi ke kolom DB
     vals_db = _vals_for_db(vals_model)
 
+    start_date = dt.date.today()
+    target_date = start_date + dt.timedelta(days=int(days))
+    target_date_iso  = target_date.isoformat()           # untuk DB (YYYY-MM-DD)
+    target_date_disp = target_date.strftime("%d/%m/%Y")  # untuk UI
+
     rec = PredictionRecord(
         user_id=current_user.id,
         lokasi_tanam=lokasi,
         status_kesuburan=label,
         rekomendasi=rekom,
         waktu_tanam_hari=int(days),
+        waktu_tanam_tanggal=target_date_iso
         **vals_db
     )
     db.session.add(rec)
@@ -273,6 +279,7 @@ def dashboard():
             "status_kesuburan": label,
             "rekomendasi": rekom,
             "waktu_tanam_hari": int(days),
+            "waktu_tanam_tanggal": target_date_disp,
             "lokasi_tanam": lokasi,
         },
         inputs=vals_db
@@ -297,7 +304,8 @@ def api_predict():
     rekom = _build_rekomendasi(label, vals_model)
 
     target_date = start_date + dt.timedelta(days=int(days))
-    target_date_str = target_date.strftime("%d/%m/%Y")
+    target_date_iso  = target_date.isoformat()
+    target_date_str  = target_date.strftime("%d/%m/%Y")
 
     vals_db = _vals_for_db(vals_model)
 
@@ -307,6 +315,7 @@ def api_predict():
         status_kesuburan=label,
         rekomendasi=rekom,
         waktu_tanam_hari=int(days),
+        waktu_tanam_tanggal=target_date_iso,
         **vals_db
     )
     db.session.add(rec); db.session.commit()
@@ -400,7 +409,8 @@ def prediksi():
 
     # === hitung tanggal target = start_date + days ===
     target_date = start_date + dt.timedelta(days=int(days))
-    target_date_str = target_date.strftime("%d/%m/%Y")
+    target_date_iso  = target_date.isoformat()
+    target_date_str  = target_date.strftime("%d/%m/%Y")
 
     # simpan ke DB (tetap simpan integer harinya saja)
     vals_db = _vals_for_db(vals_model)
@@ -410,6 +420,7 @@ def prediksi():
         status_kesuburan=label,
         rekomendasi=rekom,
         waktu_tanam_hari=int(days),
+        waktu_tanam_tanggal=target_date_iso,
         **vals_db
     )
     db.session.add(rec); db.session.commit()
@@ -451,6 +462,7 @@ _EXPORT_COLS = [
     ("status_kesuburan", "status_kesuburan"),
     ("rekomendasi", "rekomendasi"),
     ("waktu_tanam_hari", "waktu_tanam_hari"),
+    ("waktu_tanam_tanggal", "waktu_tanam_tanggal"),
 ]
 
 def _records_to_rows(queryset):
