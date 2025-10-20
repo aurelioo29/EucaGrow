@@ -1,9 +1,70 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 
-/* Toolbar */
-.report-card {
-  padding: 14px;
+/* ==== Full-page background + overlay ==== */
+html,
+body {
+  min-height: 100%;
+  height: 100%;
 }
+
+body {
+  background: #0b1220 url("/static/bg-new.jpeg") center/cover no-repeat fixed;
+  position: relative;
+}
+
+/* overlay gelap memudar ke bawah */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.55) 0,
+    rgba(0, 0, 0, 0.35) 220px,
+    rgba(0, 0, 0, 0) 420px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Mobile: fixed bg bikin lag */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+/* ==== Header teks supaya kebaca ==== */
+.page-title {
+  margin: 6px 0 4px;
+  font-size: 34px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 1;
+}
+.muted {
+  color: #e2e8f0;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  margin: 0 0 18px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==== Kartu laporan (glass) ==== */
+.report-card {
+  position: relative;
+  z-index: 1; /* di atas overlay */
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 10px 20px rgba(2, 6, 23, 0.06);
+}
+
+/* ==== Toolbar ==== */
 .toolbar {
   display: flex;
   gap: 12px;
@@ -18,12 +79,12 @@
   gap: 10px;
 }
 
-/* Search */
+/* ==== Search ==== */
 .search {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--card);
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 8px 12px;
@@ -48,7 +109,7 @@
   }
 }
 
-/* Dropdown Download */
+/* ==== Dropdown Download ==== */
 .dropdown {
   position: relative;
 }
@@ -65,7 +126,6 @@
   width: 18px;
   height: 18px;
 }
-
 .dropdown[open] > summary {
   filter: brightness(0.98);
 }
@@ -102,35 +162,44 @@
   color: var(--muted);
 }
 
-/* Table */
+/* ==== Tabel ==== */
 .table-scroll {
   overflow: auto;
   border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.6); /* sedikit kontras di atas foto */
 }
+
 .table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.95rem;
 }
+
+/* header menempel + semi-transparan */
 .table thead th {
   position: sticky;
   top: 0;
-  background: #fff;
   z-index: 1;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(2px);
   border-bottom: 1px solid var(--border);
   padding: 10px 12px;
   text-align: left;
   white-space: nowrap;
 }
+
 .table td {
   border-bottom: 1px solid var(--border);
   padding: 10px 12px;
   vertical-align: top;
+  background: rgba(255, 255, 255, 0.85);
 }
-.table tbody tr:nth-child(even) {
-  background: #fafbff;
+
+.table tbody tr:nth-child(even) td {
+  background: rgba(245, 247, 251, 0.9);
 }
+
 .table .num {
   text-align: right;
   white-space: nowrap;
@@ -139,7 +208,12 @@
   max-width: 520px;
 }
 
-/* Helper text styles */
+/* kolom tanggal jangan pecah baris */
+.table .col-date {
+  white-space: nowrap;
+}
+
+/* helper */
 .strong {
   font-weight: 600;
 }
@@ -149,7 +223,7 @@
   padding: 16px 0;
 }
 
-/* Status badges */
+/* status badges */
 .badge {
   display: inline-block;
   font-size: 0.85rem;
@@ -173,4 +247,19 @@
   color: #991b1b;
   background: #fef2f2;
   border-color: #fecaca;
+}
+
+/* scrollbar (opsional, biar manis) */
+.table-scroll::-webkit-scrollbar {
+  height: 10px;
+}
+.table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
