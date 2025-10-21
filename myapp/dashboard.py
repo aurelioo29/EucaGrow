@@ -7,6 +7,8 @@ import os, json, io, csv, datetime as dt
 import numpy as np
 import joblib
 
+from datetime import datetime, date
+
 dash_bp = Blueprint("dash", __name__)
 
 # cache model biar gak load berulang
@@ -57,6 +59,18 @@ def _safe_feature_names_in(obj) -> list:
         return list(val)
     except Exception:
         return []
+
+@dash_bp.app_template_filter('safe_date')   # pakai .template_filter kalau mau lokal blueprint saja
+def safe_date(value, fmt='%d-%m-%Y'):
+    if not value:
+        return '-'
+    try:
+        if isinstance(value, (date, datetime)):
+            return value.strftime(fmt)
+        # string 'YYYY-MM-DD' atau 'YYYY-MM-DD ...'
+        return datetime.strptime(str(value)[:10], '%Y-%m-%d').strftime(fmt)
+    except Exception:
+        return str(value)
 
 # ---------- normalisasi kunci (fitur model → kolom DB) ----------
 _DB_COLS = {c.name for c in PredictionRecord.__table__.columns}
@@ -266,7 +280,7 @@ def dashboard():
         status_kesuburan=label,
         rekomendasi=rekom,
         waktu_tanam_hari=int(days),
-        waktu_tanam_tanggal=target_date_iso
+        waktu_tanam_tanggal=target_date_iso,   # <-- KOMANYA WAJIB ADA
         **vals_db
     )
     db.session.add(rec)

@@ -134,7 +134,9 @@
         {% for r in rows %}
         <tr>
           <td class="muted">{{ loop.index }}</td>
-          <td>{{ (r.created_at or r.timestamp) | default('-', true) }}</td>
+          <td class="num">
+            {{ r.created_at | safe_date('%d-%m-%Y %H:%M:%S') }}
+          </td>
           <td class="strong">{{ r.lokasi_tanam or '-' }}</td>
           <td class="num">{{ r.suhu_udara }}</td>
           <td class="num">{{ r.kelembapan_udara }}</td>
@@ -156,10 +158,7 @@
           </td>
           <td class="wrap">{{ r.rekomendasi }}</td>
           <td class="num strong">{{ r.waktu_tanam_hari }}</td>
-          <td class="num">
-            {% set d = r.waktu_tanam_tanggal %} {{ d and (d[8:10] ~ '-' ~ d[5:7]
-            ~ '-' ~ d[0:4]) or '-' }}
-          </td>
+          <td class="num">{{ r.waktu_tanam_tanggal | safe_date }}</td>
         </tr>
         {% else %}
         <tr>
